@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 80%;
+}
+
+button {
+    padding: 10px 20px;
+}
+</style>
+    <title>Signup Form</title>
+</head>
+<body>
+    <div class="container">
+        <h1 id="form-title">Sign Up</h1>
+        <form id="userForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const userForm = document.getElementById('userForm');
+    const formTitle = document.getElementById('form-title');
+    
+    // Check if user data exists in localStorage
+    const savedName = localStorage.getItem('name');
+    const savedEmail = localStorage.getItem('email');
+
+    if (savedName && savedEmail) {
+        // User is already signed up
+        formTitle.textContent = 'Sign In';
+        userForm.innerHTML = `
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <button type="submit">Sign In</button>
+        `;
+    }
+
+    userForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+
+        if (savedName && savedEmail) {
+            // Check if the entered data matches saved data
+            if (name === savedName && email === savedEmail) {
+                redirect();
+            } else {
+                alert('Incorrect name or email. Please try again.');
+            }
+        } else {
+            // Save data to localStorage
+            localStorage.setItem('name', name);
+            localStorage.setItem('email', email);
+            redirect();
+        }
+    });
+
+    function redirect() {
+        const ports = [3000, 3001, 3002, 3003, 3004];
+        const randomPort = ports[Math.floor(Math.random() * ports.length)];
+        window.location.href = `http://localhost:${randomPort}`;
+    }
+});
+
+</script>
+</body>
+</html>
